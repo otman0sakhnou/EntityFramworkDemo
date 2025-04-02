@@ -1,22 +1,16 @@
+using System.Diagnostics;
 using EntityFrameWorkTp.Models;
+using Microsoft.Extensions.Logging;
 
 namespace EntityFrameWorkTp.Data;
 
 public static  class DataSeeder
 {
-      public static void Initialize(AppDbContext context)
+      public static void Initialize(AppDbContext context,ILogger logger = null)
         {
             context.Database.EnsureCreated();
-
-            // Vérifier si la base contient déjà des données
-            if (context.Persons.Any() || 
-                context.Students.Any() || 
-                context.Teachers.Any())
-            {
-                return; // La base a déjà été initialisée
-            }
-
-            // 1. Ajouter des Matières
+            
+            // 1. Add Subjects
             var subjects = new Subject[]
             {
                 new Subject { Name = "Mathématiques", Description = "Algèbre et géométrie" },
@@ -26,8 +20,9 @@ public static  class DataSeeder
             };
             context.Subjects.AddRange(subjects);
             context.SaveChanges();
+            logger?.LogDebug("Added {Count} subjects", subjects.Length);
 
-            // 2. Ajouter des Personnes
+            //  Add Persons
             var persons = new Person[]
             {
                 new Person { FirstName = "Jean", LastName = "Dupont" },
@@ -39,8 +34,9 @@ public static  class DataSeeder
             };
             context.Persons.AddRange(persons);
             context.SaveChanges();
+            logger?.LogDebug("Added {Count} Persons", persons.Length);
 
-            // 3. Ajouter des Enseignants
+            //  Add teachers
             var teachers = new Teacher[]
             {
                 new Teacher { 
@@ -62,7 +58,7 @@ public static  class DataSeeder
             context.Teachers.AddRange(teachers);
             context.SaveChanges();
 
-            // 4. Ajouter des Classes
+            // 4. Add classes
             var classes = new Class[]
             {
                 new Class { 
@@ -83,8 +79,9 @@ public static  class DataSeeder
             };
             context.Classes.AddRange(classes);
             context.SaveChanges();
+            logger?.LogDebug("Added {Count} classes", classes.Length);
 
-            // 5. Ajouter des Étudiants
+            // 5. Add students
             var students = new Student[]
             {
                 new Student { 
@@ -102,8 +99,9 @@ public static  class DataSeeder
             };
             context.Students.AddRange(students);
             context.SaveChanges();
+            logger?.LogDebug("Added {Count} students", students.Length);
 
-            // 6. Ajouter des Inscriptions
+            // 6. Add Enrollment
             var enrollments = new Enrollment[]
             {
                 new Enrollment { 
@@ -129,6 +127,7 @@ public static  class DataSeeder
             };
             context.Enrollments.AddRange(enrollments);
             context.SaveChanges();
+            logger?.LogDebug("Added {Count} enrollements", enrollments.Length);
         }
 
         public static void ClearAllData(AppDbContext context)

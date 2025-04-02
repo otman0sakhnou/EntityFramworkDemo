@@ -144,3 +144,9 @@ C:\Users\osakhnou\Desktop\EntityFrameWorkTp\EntityFrameWorkTp\obj\Debug\net9.0\r
 C:\Users\osakhnou\Desktop\EntityFrameWorkTp\EntityFrameWorkTp\obj\Debug\net9.0\EntityFrameWorkTp.pdb
 C:\Users\osakhnou\Desktop\EntityFrameWorkTp\EntityFrameWorkTp\obj\Debug\net9.0\EntityFrameWorkTp.genruntimeconfig.cache
 C:\Users\osakhnou\Desktop\EntityFrameWorkTp\EntityFrameWorkTp\obj\Debug\net9.0\ref\EntityFrameWorkTp.dll
+C:\Users\osakhnou\Desktop\EntityFrameWorkTp\EntityFrameWorkTp\bin\Debug\net9.0\SimpleInjector.dll
+C:\Users\osakhnou\Desktop\EntityFrameWorkTp\EntityFrameWorkTp\bin\Debug\net9.0\SimpleInjector.Integration.AspNetCore.dll
+C:\Users\osakhnou\Desktop\EntityFrameWorkTp\EntityFrameWorkTp\bin\Debug\net9.0\SimpleInjector.Integration.AspNetCore.Mvc.Core.dll
+C:\Users\osakhnou\Desktop\EntityFrameWorkTp\EntityFrameWorkTp\bin\Debug\net9.0\SimpleInjector.Integration.GenericHost.dll
+C:\Users\osakhnou\Desktop\EntityFrameWorkTp\EntityFrameWorkTp\bin\Debug\net9.0\SimpleInjector.Integration.ServiceCollection.dll
+C:\Users\osakhnou\Desktop\EntityFrameWorkTp\EntityFrameWorkTp\obj\Debug\net9.0\EntityFrameWorkTp.sourcelink.json

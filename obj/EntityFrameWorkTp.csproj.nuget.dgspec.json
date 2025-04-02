@@ -69,6 +69,22 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.2, )"
+            },
+            "SimpleInjector": {
+              "target": "Package",
+              "version": "[5.5.0, )"
+            },
+            "SimpleInjector.Integration.AspNetCore": {
+              "target": "Package",
+              "version": "[5.5.0, )"
+            },
+            "SimpleInjector.Integration.AspNetCore.Mvc.Core": {
+              "target": "Package",
+              "version": "[5.5.0, )"
+            },
+            "SimpleInjector.Integration.GenericHost": {
+              "target": "Package",
+              "version": "[5.5.0, )"
             }
           },
           "imports": [
