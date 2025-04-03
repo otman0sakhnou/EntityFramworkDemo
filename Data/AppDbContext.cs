@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
     public DbSet<Class> Classes { get; set; }
     public DbSet<Subject> Subjects { get; set; }
     public DbSet<Enrollment> Enrollments { get; set; }
+    public DbSet<TeacherSubjectView> TeacherSubjects { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // Configure your connection string here
@@ -20,15 +21,15 @@ public class AppDbContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Configuration qui n'est pas possible avec Data Annotations
         modelBuilder.Entity<Enrollment>()
             .HasIndex(e => new { e.StudentId, e.ClassId })
             .IsUnique();
-    
-        // Configuration de relations complexes
+        
         modelBuilder.Entity<Teacher>()
             .HasMany(t => t.Classes)
             .WithOne(c => c.Teacher)
             .OnDelete(DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<TeacherSubjectView>().HasNoKey().ToView("V_Teacher_Subject");
     }
 }

@@ -1,6 +1,7 @@
 using EntityFrameWorkTp.Data;
 using EntityFrameWorkTp.Infrastructure.Interfaces;
 using EntityFrameWorkTp.Infrastructure.Repositories;
+using EntityFrameWorkTp.Services;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 
@@ -24,6 +25,9 @@ public class DependencyConfig
             
         // Register Unit of Work
         container.Register<IUnitOfWork, UnitOfWork>(Lifestyle.Scoped);
+        
+        //Register the DatabaseService
+        container.Register<IDatabaseService, DatabaseService>(Lifestyle.Scoped);
             
         // Verify the container's configuration
         container.Verify();

@@ -1,16 +1,12 @@
-﻿
-
-// Initialisation de la base de données avec des données de test
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using EntityFrameWorkTp;
 using EntityFrameWorkTp.Data;
 using EntityFrameWorkTp.Infrastructure.Interfaces;
 using EntityFrameWorkTp.Models;
+using EntityFrameWorkTp.Services;
+using Microsoft.CSharp.RuntimeBinder;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
-
-
 
 // Configure the DI container
 var container = DependencyConfig.Configure();
@@ -19,13 +15,13 @@ var container = DependencyConfig.Configure();
 using (AsyncScopedLifestyle.BeginScope(container))
 {
     var context = container.GetInstance<AppDbContext>();
+    
     // Check if database already has data
     if (context.Persons.Any() || 
         context.Students.Any() || 
         context.Teachers.Any())
     {
         Console.WriteLine("Database already contains data - skipping seeding");
-        // Remove the return here to continue execution 
     }
     else
     {
@@ -42,20 +38,66 @@ using (AsyncScopedLifestyle.BeginScope(container))
         }
     }
 
-// Example usage
-    using (AsyncScopedLifestyle.BeginScope(container))
+    // Example usage of UnitOfWork
+    var unitOfWork = container.GetInstance<IUnitOfWork>();
+    try
     {
-        var unitOfWork = container.GetInstance<IUnitOfWork>();
+        var students = await unitOfWork.StudentsReadOnly.GetAllAsync();
+        Console.WriteLine($"Found {students.Count()} students");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Operation failed: {ex.Message}");
+    }
 
-        try
+    // Example usage of DatabaseService (view and stored procedure)
+    var databaseService = container.GetInstance<IDatabaseService>();
+    
+    // 1. Using the view 
+    var teachers = await databaseService.GetTeacherSubjectsDynamicAsync();
+    if (teachers.Any())
+    {
+        Console.WriteLine("Teachers with their subjects:");
+        foreach (var teacher in teachers)
         {
-            //repositories operations
-            var students = await unitOfWork.StudentsReadOnly.GetAllAsync();
-            Console.WriteLine($"Found {students.Count()} students");
+            try 
+            {
+                Console.WriteLine($"{teacher.TeacherFullName} teaches {teacher.SubjectName}");
+            }
+            catch (RuntimeBinderException ex)
+            {
+                Console.WriteLine($"Invalid teacher data structure: {ex.Message}");
+            }
         }
-        catch (Exception ex)
+    }
+    else
+    {
+        Console.WriteLine("No teacher-subject data available");
+    }
+
+    // 2. Using the stored procedure 
+    try
+    {
+        var student = await databaseService.GetStudentByNumberAsync("STU001");
+        if (student != null)
         {
-            Console.WriteLine($"Operation failed: {ex.Message}");
+            try
+            {
+                Console.WriteLine($"Found student: {student.FullName}");
+                Console.WriteLine($"Student number: {student.StudentNumber}");
+            }
+            catch (RuntimeBinderException ex)
+            {
+                Console.WriteLine($"Invalid student data structure: {ex.Message}");
+            }
         }
+        else
+        {
+            Console.WriteLine("Student not found");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Student lookup failed: {ex.Message}");
     }
 }
